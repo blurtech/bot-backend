@@ -5,7 +5,9 @@ let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 let mongoose = require('mongoose');
 
-mongoose.connect('mongodb://mongo:27017/chatbot', {useNewUrlParser: true})
+mongoose.connect('mongodb://mongo:27017/chatbot', {useNewUrlParser: true}, function(err) {
+  console.log('Error:\n' + err)
+});
 
 let indexRouter = require('./routes/index');
 let messagesRouter = require('./routes/messages');
