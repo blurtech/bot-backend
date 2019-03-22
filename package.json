@@ -9,7 +9,8 @@
     "lint": "eslint . --ext .js",
     "lint-fix": "eslint . --ext .js --fix",
     "doc": "jsdoc -c jsdoc.conf.json",
-    "test": "mocha ./tests --recursive"
+    "test": "mocha ./tests --recursive",
+    "pre-push": "npm run lint && npm run test && npm run doc"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "chai": "4.2.0",
+    "chai-http": "4.2.1",
     "eslint": "5.15.3",
     "jsdoc": "3.5.5",
     "mocha": "6.0.2",
