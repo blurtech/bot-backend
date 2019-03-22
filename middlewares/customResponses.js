@@ -6,6 +6,7 @@ const extractValidationType = (errors) => {
 
 const customResponses = {
     success(data) {
+        console.log(data);
         return this.status(200).json({
             success: true,
             data,
