@@ -21,7 +21,7 @@
     "pug": "2.0.3"
   },
   "devDependencies": {
-    "eslint": "^5.15.3",
+    "eslint": "5.15.3",
     "jsdoc": "3.5.5",
     "nodemon": "1.18.10"
   }
