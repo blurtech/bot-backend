@@ -1,5 +1,6 @@
 let express = require('express');
 let router = express.Router();
+require('../models/answer.js');
 require('../models/message.js');
 const controller = require('../controllers/messages');
 
