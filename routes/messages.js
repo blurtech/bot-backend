@@ -1,15 +1,9 @@
 let express = require('express');
 let router = express.Router();
-let message = require('../models/message');
+require('../models/message.js');
+const controller = require('../controllers/messages');
 
-/* Send greetings */
-router.get('/greetings', function(req, res, next) {
-    res.success({message: 'Hello!'});
-});
-
-
-router.post('/', function(req, res, next) {
-    res.success({message: req.body.message + ' no, fuck you'});
-});
+router.get('/greetings', controller.greetings)
+router.post('/', controller.sendMessage)
 
 module.exports = router;

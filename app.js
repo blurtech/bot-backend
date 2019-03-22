@@ -9,7 +9,7 @@ const createError = require('http-errors'),
 
 const customResponses = require('./middlewares/customResponses');
 
-mongoose.connect('mongodb://mongo:27017/chatbot', {useNewUrlParser: true}, function(err) {
+mongoose.connect('mongodb://toor:pass123@ds119606.mlab.com:19606/chatbot', {useNewUrlParser: true}, function(err) { //mongodb://mongo:27017/chatbot
   console.log('Error:\n' + err);
 });
 
