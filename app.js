@@ -6,7 +6,7 @@ let logger = require('morgan');
 let mongoose = require('mongoose');
 
 mongoose.connect('mongodb://mongo:27017/chatbot', {useNewUrlParser: true}, function(err) {
-  console.log('Error:\n' + err)
+  console.log('Error:\n' + err);
 });
 
 let indexRouter = require('./routes/index');
