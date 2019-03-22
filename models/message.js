@@ -7,4 +7,4 @@ let messagesSchema = new Schema({
     message: String
 });
 
-module.exports = mongoose.model('messages', messagesSchema);
+module.exports = mongoose.model('message', messagesSchema);

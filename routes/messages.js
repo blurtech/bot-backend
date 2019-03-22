@@ -4,12 +4,12 @@ let message = require('../models/message');
 
 /* Send greetings */
 router.get('/greetings', function(req, res, next) {
-    res.json({message: 'Hello!'});
+    res.success({message: 'Hello!'});
 });
 
 
 router.post('/', function(req, res, next) {
-    res.json({message: req.body.message + ' no, fuck you'});
+    res.success({message: req.body.message + ' no, fuck you'});
 });
 
 module.exports = router;
