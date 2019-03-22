@@ -1,7 +1,7 @@
 const repository = require('../repositories/messages');
 
 exports.greetings = (req, res) => {
-    res.success({message: repository.greetings()});
+    res.success(repository.greetings());
 }
 
 exports.sendMessage = (req, res) => {
