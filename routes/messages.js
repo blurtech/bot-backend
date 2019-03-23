@@ -5,6 +5,6 @@ require('../models/user.js');
 const controller = require('../controllers/messages');
 
 router.get('/greetings', controller.greetings)
-router.get('/:message', controller.sendMessage)
+router.post('/', controller.sendMessage)
 
 module.exports = router;
