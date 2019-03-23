@@ -5,4 +5,4 @@ exports.greetings = () => Answers.findOne( {'special': 'greetings'}, {'message':
 
 exports.getKeywords = () => Answers.find().distinct( 'question' );
 
-exports.getAnswer = (keyword) => Answers.findOne( {'answers': keyword}, 'special' );
+exports.getAnswer = (keyword) => Answers.findOne( {'question': keyword}, 'special' );

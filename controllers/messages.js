@@ -6,6 +6,7 @@ exports.greetings = async (req, res) => {
     return res.success(data)
 };
 
-exports.sendMessage = (req, res) => {
-    res.success({message: repository.getAnswer('Пока') + ' no, fuck you'});
+exports.sendMessage = async (req, res) => {
+    const data = await repository.getAnswer( keyword: 'Пока')
+    return res.success(data)
 };
