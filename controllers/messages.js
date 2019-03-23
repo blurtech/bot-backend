@@ -7,5 +7,5 @@ exports.greetings = async (req, res) => {
 };
 
 exports.sendMessage = (req, res) => {
-    res.success(req.body);
-}
+    res.success({message: repository.getAnswer('Пока') + ' no, fuck you'});
+};
