@@ -3,8 +3,7 @@ let Schema = mongoose.Schema;
 
 let messageSchema = new Schema({
     user: String,
-    time: Date,
-    message: String
+    messages: Array
 });
 
-module.exports = mongoose.model('messages', messageSchema);
+module.exports = mongoose.model('users', messageSchema);

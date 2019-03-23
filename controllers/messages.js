@@ -1,11 +1,8 @@
 const repository = require('../repositories/messages');
 
-exports.greetings = (req, res) => {
-    return repository.greetings().then((data) => {
-        return res.success(data);
-    }).catch((err) => {
-        return res.serverError(err);
-    });
+exports.greetings = async (req, res) => {
+    const data = await repository.greetings()
+    return res.success(data)
 };
 
 exports.sendMessage = (req, res) => {

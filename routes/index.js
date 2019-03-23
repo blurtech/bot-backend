@@ -7,6 +7,6 @@ router.get('/', function(req, res, next) {
   res.success({message: "Everything OK!"});
 });
 
-router.use('/api/v1/messages', messages);
+router.use('/api/messages', messages);
 
 module.exports = router;
