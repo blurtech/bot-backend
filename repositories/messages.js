@@ -5,4 +5,6 @@ exports.greetings = () => Answers.findOne( {'special': 'greetings'}, {'message':
 
 exports.getKeywords = () => Answers.find().distinct( 'question' );
 
-exports.getAnswer = (keyword) => Answers.findOne( {'question': keyword}, 'special' );
+exports.getAnswer = (keyword) => Answers.findOne( {'question': keyword}, 'question' );
+
+exports.getMessage = (id) => Answers.findOne({'_id': id}, {'message': 1, '_id': 0})
