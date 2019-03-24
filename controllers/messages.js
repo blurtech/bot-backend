@@ -1,6 +1,11 @@
 const repository = require('../repositories/messages');
 const fuzz = require('fuzzball');
 
+/**
+ * Преобразование в одномерный массив
+ * @param {Array} input - ключевое слово
+ * @returns {Array} одномерный массив
+ */
 const flat = (input) => {
 	return input.reduce((acc, current) => {
 		return acc.concat(current);
@@ -12,6 +17,12 @@ exports.greetings = async (req, res) => {
     return res.success(data)
 };
 
+/**
+ * Приём и отправка сообщений
+ * @param {json} req - текст запроса
+ * @param {json} res - текст ответа
+ * @returns {json} ответ
+ */
 exports.sendMessage = async (req, res) => {
     let questions = [];
     const data = await repository.getKeywords();
