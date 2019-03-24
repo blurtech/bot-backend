@@ -29,7 +29,7 @@ exports.sendMessage = async (req, res) => {
     	acc.push(current[0]);
     	return acc;
     }, []);
-    const answer = questions
+    const answer = questions.length
     	? await repository.getAnswer(questions[0])
     	: { message: 'Я не понимаю чего вы от меня хотите, можете перефразировать?' };
     return res.success(answer)
