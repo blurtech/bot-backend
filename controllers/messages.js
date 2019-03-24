@@ -15,14 +15,10 @@ exports.sendMessage = async (req, res) => {
     questions = questions.reduce(function(flat, current) {
         return flat.concat(current);
     }, []);
-    questions.forEach(async function (element) {
-        if (fuzz.token_sort_ratio(element, req.body.message) > 70)
-            return res.success(await repository.getAnswer(element));
-    });
     const options = {
     	limit: 1,
     	cutoff: 50,
     	unsorted: true
     };
-    req.body.message.split(' ').map(word => fuzz.extract(word, questions, options))
+    questions = req.body.message.split(' ').map(word => fuzz.extract(word, questions, options))
 };
