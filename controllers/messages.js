@@ -31,6 +31,6 @@ exports.sendMessage = async (req, res) => {
     }, []);
     const answer = questions.length
         ? await repository.getAnswer(questions[0])
-        : { message: 'Я не понимаю чего вы от меня хотите, можете перефразировать?' };
+        : (repository.saveQuestion(req.body.message), { message: 'Я не понимаю чего вы от меня хотите, можете перефразировать?' });
     return res.success(answer)
 };
