@@ -20,5 +20,5 @@ exports.sendMessage = async (req, res) => {
     	cutoff: 50,
     	unsorted: true
     };
-    questions = req.body.message.split(' ').map(word => fuzz.extract(word, questions, options))
+    return res.success(req.body.message.split(' ').map(word => fuzz.extract(word, questions, options)))
 };
