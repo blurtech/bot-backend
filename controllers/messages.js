@@ -7,10 +7,16 @@ exports.greetings = async (req, res) => {
 };
 
 exports.sendMessage = async (req, res) => {
-    const data = await repository.getAnswer(req.body.keyword);
-    let question = data.question;
-    question.forEach(async function (element) {
+    let questions = [];
+    const data = await repository.getKeywords();
+    for (let prop in data) {
+        questions.push(data[prop].question);
+    }
+    questions = questions.reduce(function(flat, current) {
+        return flat.concat(current);
+    }, []);
+    questions.forEach(async function (element) {
         if (fuzz.token_sort_ratio(element, req.body.keyword) > 70)
-            return res.success(await repository.getMessage(data._id));
+            return res.success(await repository.getAnswer(element));
     });
 };
