@@ -27,7 +27,6 @@
     "express-session": "1.15.6",
     "fuzzball": "1.2.0",
     "http-errors": "1.6.3",
-    "lodash": "^4.17.11",
     "mongoose": "5.4.19",
     "morgan": "1.9.1",
     "passport-vkontakte": "0.3.2",
