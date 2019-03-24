@@ -32,6 +32,5 @@ exports.sendMessage = async (req, res) => {
     const answer = questions
     	? await repository.getAnswer(questions[0])
     	: { message: 'Я не понимаю чего вы от меня хотите, можете перефразировать?' };
-    console.log(answer);
     return res.success(answer)
 };
