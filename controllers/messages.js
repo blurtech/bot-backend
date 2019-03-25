@@ -185,14 +185,14 @@ exports.sendMessage = async (req, res) => {
         else {
             switch (answer.type) {
                 case 'document': {
-                    answer.message = answer.message + '\n<a href=' + answer.link + ' target=\'_blank\'>' + answer.link + '</a>';
+                    answer.message = answer.message + '\n' + answer.link;
                     break;
                 }
             }
         }
     } else {
         answer = repository.saveQuestion(req.body.message);
-        answer.message = 'Я не понимаю чего вы от меня хотите, можете перефразировать?';
+        answer.message = 'Я не понял вас, но очень быстро учусь. Попробуйте спросить меня иначе!';
     }
     return res.success({message: answer.message});
 };
