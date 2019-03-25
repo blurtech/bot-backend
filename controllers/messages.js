@@ -79,7 +79,6 @@ exports.sendMessageLong = async (req, res) => { //Функиця поиска о
  *
  */
 exports.sendMessage = async (req, res) => {
-    this.sendMessageLong(req, res);
     let questions = [];
     const data = await repository.getKeywords();
     for (let prop in data) {
