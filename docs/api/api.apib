@@ -1,0 +1,28 @@
+FORMAT: 1A
+HOST: https://nuckles.herokuapp.com/
+
+# NUCKles
+
+NUCKles - чат бот для кейса Цифровой Атом.
+
+### Messages [/api/messages]
+
+### Отправка и получение сообщения [POST]
+
++ Request (application/json)
+
+                {
+
+                    "message":"rus"
+
+                }
+
+
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "data": {
+                "message": "Привет. Я бот NUCKles!"
+            }
+        }

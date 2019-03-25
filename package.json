@@ -10,7 +10,9 @@
     "lint-fix": "eslint . --ext .js --fix",
     "doc": "jsdoc -c jsdoc.conf.json",
     "test": "mocha ./tests --recursive",
-    "pre-push": "npm run lint && npm run test && npm run doc"
+    "pre-push": "npm run lint && npm run test && npm run doc",
+    "api-doc": "aglio -i ./docs/api/api.apib -o ./docs/api/index.html",
+    "docs": "npm run doc && npm run api-doc"
   },
   "repository": {
     "type": "git",
@@ -33,6 +35,7 @@
     "pug": "2.0.3"
   },
   "devDependencies": {
+    "aglio": "2.3.0",
     "chai": "4.2.0",
     "chai-http": "4.2.1",
     "eslint": "5.15.3",

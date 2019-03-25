@@ -44,7 +44,7 @@ const customResponses = {
     notFound() {
         return this.status(404).json({
             success: false,
-            error: 'not_found',
+            error: 'not_found'
         });
     },
 
