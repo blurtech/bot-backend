@@ -98,13 +98,16 @@ exports.sendMessage = async (req, res) => {
     let answer;
     if (questions.length) {
         answer = await repository.getAnswer(questions[0]);
-        let date = new Date();
-
-        let hours = date.getHours();
-        let minutes = "0" + date.getMinutes();
 
         switch (answer.special) {
-            case 'time':answer.message = answer.message + hours + ':' + minutes.substr(-2);
+            case 'time':{
+                let date = new Date();
+
+                let hours = date.getHours();
+                let minutes = "0" + date.getMinutes();
+
+                answer.message = answer.message + hours + ':' + minutes.substr(-2);
+            }
         }
     } else {
         answer = repository.saveQuestion(req.body.message), {message: 'Я не понимаю чего вы от меня хотите, можете перефразировать?'};
