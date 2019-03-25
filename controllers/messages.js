@@ -120,7 +120,7 @@ exports.sendMessage = async (req, res) => {
         }
     } else {
         answer = repository.saveQuestion(req.body.message);
-        answer.message = 'Я не понимаю чего вы от меня хотите, можете перефразировать?';
+        answer.message = 'Я не понял вас, но очень быстро учусь. Попробуйте спросить меня иначе!';
     }
     return res.success({message: answer.message})
 };
