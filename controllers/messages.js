@@ -96,13 +96,13 @@ exports.sendMessage = async (req, res) => {
         return acc;
     }, []);
     let answer;
-    if (questions.length) {
+    console.log(questions);
+    if (questions.length !== 0) {
         answer = await repository.getAnswer(questions[0]);
         if (answer.type === 'text')
             switch (answer.special) {
                 case 'time': {
                     let date = new Date();
-
                     let hours = date.getHours();
                     let minutes = "0" + date.getMinutes();
 
@@ -120,7 +120,8 @@ exports.sendMessage = async (req, res) => {
             }
         }
     } else {
-        answer = repository.saveQuestion(req.body.message), {message: 'Я не понимаю чего вы от меня хотите, можете перефразировать?'};
+        answer = repository.saveQuestion(req.body.message);
+        answer.message = 'Я не понимаю чего вы от меня хотите, можете перефразировать?';
     }
     return res.success({message: answer.message})
 };
