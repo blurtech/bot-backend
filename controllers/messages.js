@@ -105,7 +105,7 @@ exports.sendMessage = async (req, res) => {
                     let hours = date.getHours();
                     let minutes = "0" + date.getMinutes();
 
-                    answer.message = answer.message + hours + ':' + minutes.substr(-2);
+                    answer.message = answer.message + hours + ':' + minutes.substr(-2) + ' GMT';
                     break;
                 }
 
