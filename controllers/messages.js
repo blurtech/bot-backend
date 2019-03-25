@@ -1,6 +1,12 @@
 const repository = require('../repositories/messages');
 const fuzz = require('fuzzball');
 
+
+console.log(fuzz.token_set_ratio('Есть кейс цифрового атома?', 'есть кейс?'));
+console.log(fuzz.token_set_ratio('Есть цифрового атома кейс?', 'есть кейс?'));
+console.log(fuzz.token_set_ratio('Есть цифрового атома кейс?', 'цифровой атом'));
+
+
 /**
  * Преобразование в одномерный массив
  * @param {Array} input - ключевое слово
@@ -97,7 +103,26 @@ function checkWords(words, keyWords) {
         map.set(item.answer.special, item.result[0].score + map.get(item.answer.special));
     });
 
+    // map.forEach(async (value, key, map) => {
+    //     let answer = await repository.getAnswerBySpecial(key);
+    //     let n = answer.question.length
+    //     map.set(key, value * (1/ n));
+    //     console.log(map);
+    // });
+
     console.log(map);
+
+    let max = 0;
+    let maxKey;
+
+    map.forEach( (value, key, map) => {
+        if (value > max) {
+            max = value;
+            maxKey = key;
+        }
+    });
+
+    return map.size !== 0 ? maxKey : null;
 
 }
 
@@ -123,7 +148,9 @@ exports.sendMessage = async (req, res) => {
         questions.push(data[prop].question);
     }
 
-    checkWords(req.body.message.split(' '), await repository.newGetKeywords());
+    let special = checkWords(req.body.message.split(' '), await repository.newGetKeywords());
+
+    console.log(special);
 
     questions = flat(questions);
 
@@ -139,9 +166,10 @@ exports.sendMessage = async (req, res) => {
         acc.push(current[0]);
         return acc;
     }, []);
+
     let answer;
     if (questions.length !== 0) {
-        answer = await repository.getAnswer(questions[0]);
+        answer = await repository.getAnswerBySpecial(special);
         if (answer.type === 'text')
             switch (answer.special) {
                 case 'time': {

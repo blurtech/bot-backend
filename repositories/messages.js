@@ -19,6 +19,10 @@ newGetKeywords = () => Answers.find({}, {'question': 1, 'special': 1,  "_id": 0}
  */
 getAnswer = (keyword) => Answers.findOne( {'question': keyword});//, {'message': 1, '_id': 0, 'special': 1} );
 
+
+
+getAnswerBySpecial = (special) => Answers.findOne( {'special': special});//, {'message': 1, '_id': 0, 'special': 1} );
+
 /**
  * Получение сообщения по id
  * @param {ObjectId} id - _id документа в котором текст сообщения
@@ -36,6 +40,7 @@ module.exports = {
     greetings,
     getKeywords,
     getAnswer,
+    getAnswerBySpecial,
     newGetKeywords,
     getMessage,
     saveQuestion
