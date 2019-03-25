@@ -96,7 +96,6 @@ exports.sendMessage = async (req, res) => {
         return acc;
     }, []);
     let answer;
-    console.log(questions);
     if (questions.length !== 0) {
         answer = await repository.getAnswer(questions[0]);
         if (answer.type === 'text')
@@ -114,7 +113,7 @@ exports.sendMessage = async (req, res) => {
         else {
             switch (answer.type) {
                 case 'document': {
-                    answer.message = answer.message + '\n' + answer.link;
+                    answer.message = answer.message + '\n<a href=' + answer.link + ' target=\'_blank\'>' + answer.link + '</a>'
                     break;
                 }
             }
