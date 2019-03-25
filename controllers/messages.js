@@ -122,5 +122,5 @@ exports.sendMessage = async (req, res) => {
     } else {
         answer = repository.saveQuestion(req.body.message), {message: 'Я не понимаю чего вы от меня хотите, можете перефразировать?'};
     }
-    return res.success(answer.message)
+    return res.success({message: answer.message})
 };
