@@ -113,7 +113,7 @@ exports.sendMessage = async (req, res) => {
         else {
             switch (answer.type) {
                 case 'document': {
-                    answer.message = answer.message + '\n<a href=' + answer.link + ' target=\'_blank\'>' + answer.link + '</a>'
+                    answer.message = answer.message + '\n' + answer.link;
                     break;
                 }
             }
