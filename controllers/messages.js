@@ -7,14 +7,60 @@ const fuzz = require('fuzzball');
  * @returns {Array} одномерный массив
  */
 const flat = (input) => {
-	return input.reduce((acc, current) => {
-		return acc.concat(current);
-	}, []);
+    return input.reduce((acc, current) => {
+        return acc.concat(current);
+    }, []);
 }
 
 exports.greetings = async (req, res) => {
     const data = await repository.greetings();
     return res.success(data)
+};
+
+exports.sendMessageLong = async (req, res) => { //Функиця поиска ответа с использованием формулы
+    let questions = [];
+    const data = await repository.getKeywords();
+    for (let prop in data) {
+        questions.push(data[prop].question);
+    }
+    questions = flat(questions);
+
+    let sizeReq = req.body.message.length;
+    let max = 0;
+
+    console.log(sizeReq);
+
+    questions.forEach(function (item, i, arr) {
+        if (item.length < sizeReq) {
+            let x = (item.length / sizeReq) * 70 * 2;
+            let score = fuzz.token_sort_ratio(req.body.message, item);
+            console.log(x + ' ' + item + ' ' + score);
+            if (x < 70) {
+                if (score < x) {
+                    questions = questions.filter(question => question !== item);
+                } else if (max < score) max = score;
+            } else {
+                if (score < 70) {
+                    questions = questions.filter(question => question !== item);
+                } else if (max < score) max = score;
+            }
+        }
+    });
+
+    questions.forEach((item) => {
+        let score = fuzz.token_sort_ratio(req.body.message, item);
+        if (score === max) console.log(item);
+    });
+
+    console.log(questions);
+    console.log(max);
+
+    questions = flat(questions).reduce((acc, current) => {
+        acc.push(current[0]);
+        return acc;
+    }, []);
+    const answer = await repository.getAnswer(questions[0]);
+    //return res.success(answer)
 };
 
 /**
@@ -40,17 +86,17 @@ exports.sendMessage = async (req, res) => {
     }
     questions = flat(questions);
     const options = {
-    	limit: 1,
-    	cutoff: 70,
-    	unsorted: true
+        limit: 1,
+        cutoff: 70,
+        unsorted: true
     };
     questions = req.body.message.split(' ').map(word => fuzz.extract(word, questions, options));
     questions = flat(questions).reduce((acc, current) => {
-    	acc.push(current[0]);
-    	return acc;
+        acc.push(current[0]);
+        return acc;
     }, []);
     const answer = questions.length
         ? await repository.getAnswer(questions[0])
-        : (repository.saveQuestion(req.body.message), { message: 'Я не понимаю чего вы от меня хотите, можете перефразировать?' });
+        : (repository.saveQuestion(req.body.message), {message: 'Я не понимаю чего вы от меня хотите, можете перефразировать?'});
     return res.success(answer)
 };
