@@ -17,6 +17,44 @@ exports.greetings = async (req, res) => {
     return res.success(data)
 };
 
+exports.sendMessageLong = async (req, res) => { //Функиця поиска ответа с использованием формулы
+    let questions = [];
+    const data = await repository.getKeywords();
+    for (let prop in data) {
+        questions.push(data[prop].question);
+    }
+    questions = flat(questions);
+
+    let sizeReq = req.body.message.length;
+    let max = 0;
+
+    console.log(sizeReq);
+
+    questions.forEach(function (item, i, questions) {
+        if (item.length < sizeReq) {
+            let x = (item.length / sizeReq) * 70 * 2;
+            console.log(x);
+            let score = fuzz.token_sort_ratio(req.body.message, item);
+            if (x < 70) {
+                if (score < x) questions.filter(question => question !== item);
+                else if (max < score) max = score;
+            }
+            if (score < 70) questions.filter(question => question !== item);
+            else if (max < score) max = score;
+        }
+
+    });
+    console.log(questions);
+    console.log(max);
+
+    questions = flat(questions).reduce((acc, current) => {
+        acc.push(current[0]);
+        return acc;
+    }, []);
+    const answer = await repository.getAnswer(questions[0]);
+    //return res.success(answer)
+};
+
 /**
  * Приём и отправка сообщений
  * @description
@@ -33,6 +71,7 @@ exports.greetings = async (req, res) => {
  *
  */
 exports.sendMessage = async (req, res) => {
+    this.sendMessageLong(req, res);
     let questions = [];
     const data = await repository.getKeywords();
     for (let prop in data) {
