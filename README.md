@@ -5,6 +5,7 @@
 
 [Список изменений](CHANGELOG.md)  
 [Документация по коду](https://blur.tech/bot-backend/)  
+[Документация по API](https://blur.tech/bot-backend/api/)  
 [Бот на Heroku](https://nuckles.herokuapp.com/)  
 
 ## Как завести конягу
