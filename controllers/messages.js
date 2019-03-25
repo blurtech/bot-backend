@@ -95,8 +95,19 @@ exports.sendMessage = async (req, res) => {
         acc.push(current[0]);
         return acc;
     }, []);
-    const answer = questions.length
-        ? await repository.getAnswer(questions[0])
-        : (repository.saveQuestion(req.body.message), {message: 'Я не понимаю чего вы от меня хотите, можете перефразировать?'});
-    return res.success(answer)
+    let answer;
+    if (questions.length) {
+        answer = await repository.getAnswer(questions[0]);
+        let date = new Date();
+
+        let hours = date.getHours();
+        let minutes = "0" + date.getMinutes();
+
+        switch (answer.special) {
+            case 'time':answer.message = answer.message + hours + ':' + minutes.substr(-2);
+        }
+    } else {
+        answer = repository.saveQuestion(req.body.message), {message: 'Я не понимаю чего вы от меня хотите, можете перефразировать?'};
+    }
+    return res.success(answer.message)
 };
