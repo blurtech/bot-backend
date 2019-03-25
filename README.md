@@ -6,7 +6,8 @@
 [Список изменений](CHANGELOG.md)  
 [Документация по коду](https://blur.tech/bot-backend/)  
 [Документация по API](https://blur.tech/bot-backend/api/)  
-[Бот на Heroku](https://nuckles.herokuapp.com/)  
+[Фронтенд](http://nuckles.blur.tech/)  
+[API](http://api.nuckles.blur.tech/)  
 
 ## Как завести конягу
 Перед запуском любой из команд кроме последней нужно выполнить `npm install`.  
