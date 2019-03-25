@@ -98,15 +98,25 @@ exports.sendMessage = async (req, res) => {
     let answer;
     if (questions.length) {
         answer = await repository.getAnswer(questions[0]);
+        if (answer.type === 'text')
+            switch (answer.special) {
+                case 'time': {
+                    let date = new Date();
 
-        switch (answer.special) {
-            case 'time':{
-                let date = new Date();
+                    let hours = date.getHours();
+                    let minutes = "0" + date.getMinutes();
 
-                let hours = date.getHours();
-                let minutes = "0" + date.getMinutes();
+                    answer.message = answer.message + hours + ':' + minutes.substr(-2);
+                    break;
+                }
 
-                answer.message = answer.message + hours + ':' + minutes.substr(-2);
+            }
+        else {
+            switch (answer.type) {
+                case 'document': {
+                    answer.message = answer.message + '\n' + answer.link;
+                    break;
+                }
             }
         }
     } else {

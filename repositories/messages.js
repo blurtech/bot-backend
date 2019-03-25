@@ -14,7 +14,7 @@ getKeywords = () => Answers.find({}, {'question': 1, "_id": 0} );
  * @param {ObjectId} keyword - ключевое слово
  * @returns {json} текст сообщения
  */
-getAnswer = (keyword) => Answers.findOne( {'question': keyword}, {'message': 1, '_id': 0, 'special': 1} );
+getAnswer = (keyword) => Answers.findOne( {'question': keyword});//, {'message': 1, '_id': 0, 'special': 1} );
 
 /**
  * Получение сообщения по id
