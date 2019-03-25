@@ -10,11 +10,12 @@ const flat = (input) => {
     return input.reduce((acc, current) => {
         return acc.concat(current);
     }, []);
-}
+};
+
 
 exports.greetings = async (req, res) => {
     const data = await repository.greetings();
-    return res.success(data)
+    return res.success(data);
 };
 
 exports.sendMessageLong = async (req, res) => { //Функиця поиска ответа с использованием формулы
@@ -63,6 +64,43 @@ exports.sendMessageLong = async (req, res) => { //Функиця поиска о
     //return res.success(answer)
 };
 
+
+function checkWords(words, keyWords) {
+    const options = {
+        cutoff: 70,
+        unsorted: false,
+        returnObjects: true
+    };
+    let res = [];
+    keyWords.forEach(keywordItem => {
+        let tmpRes = [];
+        keywordItem.question.forEach(
+            questionItem => {
+                let tmp = fuzz.extract(questionItem, words, options);
+                if (tmp.length !== 0) tmpRes.push(tmp);
+            });
+        if (tmpRes.length !== 0) {
+            tmpRes.forEach(item => res.push({result: item, answer: keywordItem}));
+            tmpRes = [];
+            // res.push({result: tmpRes, answer: keywordItem});
+            // console.log(fuzz.extract(questionItem, words, options));
+            // console.log(tmpRes);
+        }
+    });
+    // console.log(res);
+    // res.forEach(item => console.log(item));
+
+    let map = new Map();
+
+    res.forEach(item =>{
+        if (!map.has(item.answer.special)) map.set(item.answer.special, 0);
+        map.set(item.answer.special, item.result[0].score + map.get(item.answer.special));
+    });
+
+    console.log(map);
+
+}
+
 /**
  * Приём и отправка сообщений
  * @description
@@ -84,13 +122,19 @@ exports.sendMessage = async (req, res) => {
     for (let prop in data) {
         questions.push(data[prop].question);
     }
+
+    checkWords(req.body.message.split(' '), await repository.newGetKeywords());
+
     questions = flat(questions);
+
     const options = {
         limit: 1,
         cutoff: 70,
         unsorted: true
     };
+
     questions = req.body.message.split(' ').map(word => fuzz.extract(word, questions, options));
+    console.log(questions);
     questions = flat(questions).reduce((acc, current) => {
         acc.push(current[0]);
         return acc;
@@ -113,7 +157,7 @@ exports.sendMessage = async (req, res) => {
         else {
             switch (answer.type) {
                 case 'document': {
-                    answer.message = answer.message + '\n<a href=' + answer.link + ' target=\'_blank\'>' + answer.link + '</a>'
+                    answer.message = answer.message + '\n<a href=' + answer.link + ' target=\'_blank\'>' + answer.link + '</a>';
                     break;
                 }
             }
@@ -122,5 +166,5 @@ exports.sendMessage = async (req, res) => {
         answer = repository.saveQuestion(req.body.message);
         answer.message = 'Я не понимаю чего вы от меня хотите, можете перефразировать?';
     }
-    return res.success({message: answer.message})
+    return res.success({message: answer.message});
 };

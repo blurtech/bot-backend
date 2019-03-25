@@ -9,6 +9,9 @@ greetings = () => Answers.findOne( {'special': 'greetings'}, {'message': 1, '_id
  */
 getKeywords = () => Answers.find({}, {'question': 1, "_id": 0} );
 
+
+newGetKeywords = () => Answers.find({}, {'question': 1, 'special': 1,  "_id": 0} );
+
 /**
  * Получение сообщения по ключевому слову
  * @param {ObjectId} keyword - ключевое слово
@@ -33,6 +36,7 @@ module.exports = {
     greetings,
     getKeywords,
     getAnswer,
+    newGetKeywords,
     getMessage,
     saveQuestion
     };
