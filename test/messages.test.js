@@ -10,10 +10,7 @@ describe('Messages Route', function() {
             .send({message: 'Привет'})
             .set('Accept', 'application/json')
             .expect('Content-Type', 'application/json; charset=utf-8')
-            .expect(200, {success: true,
-                data: {
-                    message: "Привет. Я бот NUCKles!"
-                }});
+            .expect(200);
     });
     it('responds with success true', async () => {
         await request(app)
