@@ -12,55 +12,45 @@ const flat = (input) => {
     }, []);
 };
 
-exports.greetings = async (req, res) => {
-    const data = await repository.greetings();
-    return res.success(data);
-};
-
-exports.sendMessageLong = async (req, res) => { //Функиця поиска ответа с использованием формулы
-    let questions = [];
-    const data = await repository.getKeywords();
-    for (let prop in data) {
-        questions.push(data[prop].question);
-    }
-    questions = flat(questions);
-
-    let sizeReq = req.body.message.length;
-    let max = 0;
-
-    console.log(sizeReq);
-
-    questions.forEach(function (item, i, arr) {
-        if (item.length < sizeReq) {
-            let x = (item.length / sizeReq) * 70 * 2;
-            let score = fuzz.token_sort_ratio(req.body.message, item);
-            console.log(x + ' ' + item + ' ' + score);
-            if (x < 70) {
-                if (score < x) {
-                    questions = questions.filter(question => question !== item);
-                } else if (max < score) max = score;
-            } else {
-                if (score < 70) {
-                    questions = questions.filter(question => question !== item);
-                } else if (max < score) max = score;
-            }
+const checkWords = (words, keyWords) => {
+    const options = {
+        cutoff: 70,
+        unsorted: false,
+        returnObjects: true
+    };
+    let res = [];
+    keyWords.forEach(keywordItem => {
+        let tmpRes = [];
+        keywordItem.question.forEach(
+            questionItem => {
+                let tmp = fuzz.extract(questionItem, words, options);
+                if (tmp.length !== 0) tmpRes.push(tmp);
+            });
+        if (tmpRes.length !== 0) {
+            tmpRes.forEach(item => res.push({result: item, answer: keywordItem}));
+            tmpRes = [];
         }
     });
 
-    questions.forEach((item) => {
-        let score = fuzz.token_sort_ratio(req.body.message, item);
-        if (score === max) console.log(item);
+    let map = new Map();
+
+    res.forEach(item =>{
+        if (!map.has(item.answer.special)) map.set(item.answer.special, 0);
+        map.set(item.answer.special, item.result[0].score + map.get(item.answer.special));
     });
 
-    console.log(questions);
-    console.log(max);
+    let max = 0;
+    let maxKey;
 
-    questions = flat(questions).reduce((acc, current) => {
-        acc.push(current[0]);
-        return acc;
-    }, []);
-    const answer = await repository.getAnswer(questions[0]);
-    //return res.success(answer)
+    map.forEach( (value, key, map) => {
+        if (value > max) {
+            max = value;
+            maxKey = key;
+        }
+    });
+
+    return map.size !== 0 ? maxKey : null;
+
 };
 
 /**
@@ -84,20 +74,29 @@ exports.sendMessage = async (req, res) => {
     for (let prop in data) {
         questions.push(data[prop].question);
     }
+
+    let special = checkWords(req.body.message.split(' '), await repository.newGetKeywords());
+
+    console.log(special);
+
     questions = flat(questions);
+
     const options = {
         limit: 1,
         cutoff: 70,
         unsorted: true
     };
+
     questions = req.body.message.split(' ').map(word => fuzz.extract(word, questions, options));
+    console.log(questions);
     questions = flat(questions).reduce((acc, current) => {
         acc.push(current[0]);
         return acc;
     }, []);
+
     let answer;
     if (questions.length !== 0) {
-        answer = await repository.getAnswer(questions[0]);
+        answer = await repository.getAnswerBySpecial(special);
         if (answer.type === 'text')
             switch (answer.special) {
                 case 'time': {
