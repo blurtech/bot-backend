@@ -8,8 +8,9 @@ const createError = require('http-errors'),
     routes = require('./routes');
 
 const customResponses = require('./middlewares/customResponses');
+const mongoURI = process.env.MONGO_URI;
 
-mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true}, function(err) { //mongodb://mongo:27017/chatbot
+mongoose.connect(mongoURI, {useNewUrlParser: true}, function(err) {
   if(err != null) console.log('Error:\n' + err);
 });
 
