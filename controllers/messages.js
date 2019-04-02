@@ -10,11 +10,11 @@ const flat = (input) => {
     return input.reduce((acc, current) => {
         return acc.concat(current);
     }, []);
-}
+};
 
 exports.greetings = async (req, res) => {
     const data = await repository.greetings();
-    return res.success(data)
+    return res.success(data);
 };
 
 exports.sendMessageLong = async (req, res) => { //Функиця поиска ответа с использованием формулы
@@ -122,5 +122,5 @@ exports.sendMessage = async (req, res) => {
         answer = repository.saveQuestion(req.body.message);
         answer.message = 'Я не понял вас, но очень быстро учусь. Попробуйте спросить меня иначе!';
     }
-    return res.success({message: answer.message})
+    return res.success({message: answer.message});
 };
