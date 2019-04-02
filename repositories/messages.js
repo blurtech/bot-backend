@@ -5,7 +5,7 @@ const Question = require('../models/question');
  * Получение массива всех ключевых слов
  * @returns {Array} массив массиво с ключевыми словами
  */
-exports.getKeywords = () => Answers.find({}, {'question': 1, "_id": 0} );
+exports.getKeywords = () => Answers.find({}, {'question': 1, 'special': 1, "_id": 0} );
 
 /**
  * Получение сообщения по ключевому слову
@@ -26,3 +26,5 @@ exports.getMessage = (id) => Answers.findById( id, {'message': 1, '_id': 0} );
  * @param {string} question - непонятый ботом вопрос
  */
 exports.saveQuestion = (question) => Question.create({question: question});
+
+exports.getAnswerBySpecial = (special) => Answers.findOne( {'special': special});

@@ -75,9 +75,7 @@ exports.sendMessage = async (req, res) => {
         questions.push(data[prop].question);
     }
 
-    let special = checkWords(req.body.message.split(' '), await repository.newGetKeywords());
-
-    console.log(special);
+    let special = checkWords(req.body.message.split(' '), await repository.getKeywords());
 
     questions = flat(questions);
 
@@ -88,7 +86,6 @@ exports.sendMessage = async (req, res) => {
     };
 
     questions = req.body.message.split(' ').map(word => fuzz.extract(word, questions, options));
-    console.log(questions);
     questions = flat(questions).reduce((acc, current) => {
         acc.push(current[0]);
         return acc;
